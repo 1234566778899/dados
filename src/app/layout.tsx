@@ -14,6 +14,7 @@ export const metadata: Metadata = {
   title,
   description,
   applicationName: "Tirada",
+  verification: { google: "2OG0s1XAsC_7JK8VTryb3GLyxZzB9IsKYSFMwsOsqWo" },
   alternates: { canonical: "/" },
   openGraph: {
     title,
