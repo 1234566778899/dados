@@ -1,3 +1,4 @@
+import { CookieConsent, CookiePreferences } from "@/components/CookieConsent";
 import { Roller } from "@/components/Roller";
 import { SITE_URL } from "@/lib/site";
 
@@ -20,7 +21,7 @@ const faq = [
   {
     question: "¿Tiene anuncios o pide registrarse?",
     answer:
-      "No. No hay publicidad, registro ni rastreadores. El historial y tus preferencias se guardan solo en tu dispositivo y puedes borrarlos cuando quieras.",
+      "No. No hay publicidad ni registro. El historial se guarda solo en tu dispositivo y puedes borrarlo cuando quieras. Solo si aceptas, medimos las visitas con Google Analytics, sin enviar tus resultados.",
   },
   {
     question: "¿Funciona sin internet?",
@@ -57,6 +58,7 @@ export default function Page() {
   return (
     <>
       <Roller />
+      <CookieConsent />
       <article id="acerca" className="info">
         <h1>Lanzar dados online</h1>
         <p className="info-lead">
@@ -83,6 +85,7 @@ export default function Page() {
             <p>{answer}</p>
           </section>
         ))}
+        <CookiePreferences />
       </article>
       <script
         type="application/ld+json"

@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { trackRoll } from "@/components/CookieConsent";
 import type { DiceEngine } from "@/lib/engine";
 import { fairFace } from "@/lib/fair";
 import { DiceSound } from "@/lib/sound";
@@ -148,6 +149,7 @@ export function Roller() {
       setRoll({ values, held, rolling: false, serial: serialRef.current });
       setAnnouncement(describe(values));
       prefs.addRoll(values);
+      trackRoll(values.length);
     };
 
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;

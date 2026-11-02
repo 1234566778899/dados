@@ -417,6 +417,47 @@ button:disabled {
   margin-left: -10px;
 }
 
+/* --- Aviso de cookies: flota sobre la mesa, nunca sobre los controles --- */
+.consent {
+  position: fixed;
+  z-index: 10;
+  left: 20px;
+  bottom: 20px;
+  width: min(360px, calc(100vw - 420px));
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--bg);
+  box-shadow: 0 12px 36px rgb(0 0 0 / 0.16);
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.consent-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.consent-actions button {
+  min-height: 40px;
+  border-radius: 10px;
+  background: var(--control);
+  font-weight: 500;
+  transition: background-color 0.15s;
+}
+
+.consent-actions button:hover {
+  background: var(--control-hover);
+}
+
+.cookie-preferences button {
+  color: var(--ink);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
 /* --- Contenido bajo la mesa --- */
 html {
   scroll-behavior: smooth;
@@ -565,6 +606,13 @@ html {
 
   .history-toggle {
     display: block;
+  }
+
+  .consent {
+    top: calc(56px + env(safe-area-inset-top));
+    bottom: auto;
+    left: 12px;
+    width: calc(100vw - 24px);
   }
 }
 
