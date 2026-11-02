@@ -1,36 +1,36 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Tirada
 
-## Getting Started
+Lanzador de dados 3D para la web: física real horneada en Blender, resultados justos y sin anuncios.
 
-First, run the development server:
+## Cómo funciona
 
-```bash
+1. **Blender** (`blender/`) modela el dado y la bandeja, simula lanzamientos con cuerpos rígidos y los hornea.
+2. **La web** decide el resultado con `crypto.getRandomValues` y elige una toma horneada.
+3. **La simetría del cubo** gira el dado sobre sí mismo para que la cara sorteada quede arriba. La silueta no
+   cambia, así que la física sigue siendo correcta: la animación muestra el resultado, nunca lo decide.
+
+## Desarrollo
+
+```sh
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm test        # justicia del dado y poses de todas las tomas
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Regenerar los assets 3D
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Requiere Blender 5.2 en el `PATH`. El resultado se versiona en `public/models`, así que Vercel no necesita Blender.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```sh
+sh blender/build_all.sh
+```
 
-## Learn More
+| Archivo | Qué hace |
+| --- | --- |
+| `blender/common.py` | Geometría del dado y la bandeja, materiales, horneado del fieltro |
+| `blender/build_assets.py` | Exporta `public/models/scene.glb` |
+| `blender/bake_throws.py` | Simula y valida lanzamientos: `throws.bin` y `throws.json` |
+| `blender/render_stills.py` | Póster, icono e imagen social en Cycles |
+| `blender/inspect_throws.mjs` | Audita las tomas horneadas |
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Si cambias la cámara en `src/lib/engine.ts`, cambia también la del póster en `render_stills.py`.
