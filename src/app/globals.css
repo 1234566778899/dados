@@ -160,6 +160,8 @@ button:disabled {
 }
 
 .text-button {
+  display: inline-flex;
+  align-items: center;
   min-height: 40px;
   padding: 0 10px;
   border-radius: 10px;
@@ -415,29 +417,68 @@ button:disabled {
   margin-left: -10px;
 }
 
-.about h3 {
-  margin-top: 18px;
-  font-size: 15px;
+/* --- Contenido bajo la mesa --- */
+html {
+  scroll-behavior: smooth;
+}
+
+.info {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 72px 24px calc(96px + env(safe-area-inset-bottom));
+  border-top: 1px solid var(--line);
+}
+
+.info h1 {
+  font-size: clamp(34px, 6vw, 48px);
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+}
+
+.info h2 {
+  margin-top: 48px;
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.info h3 {
+  margin-top: 24px;
+  font-size: 17px;
   font-weight: 600;
 }
 
-.about p {
-  margin-top: 4px;
+.info p,
+.info li {
+  margin-top: 8px;
   color: var(--muted);
-  font-size: 15px;
-  line-height: 1.5;
+  font-size: 17px;
+  line-height: 1.55;
 }
 
-.about code {
-  font-size: 13px;
+.info .info-lead {
+  margin-top: 16px;
+  font-size: 20px;
 }
 
-.about kbd {
+.info ol {
+  margin-top: 12px;
+  padding-left: 22px;
+  list-style: decimal;
+}
+
+.info strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.info kbd {
   padding: 1px 6px;
   border-radius: 5px;
   background: var(--control);
   font-family: inherit;
-  font-size: 13px;
+  font-size: 15px;
 }
 
 /* --- Movil: la mano llega abajo, asi que los controles viven abajo --- */
@@ -589,6 +630,10 @@ button:disabled {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
   *,
   *::before,
   *::after {

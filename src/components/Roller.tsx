@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import type { DiceEngine } from "@/lib/engine";
 import { fairFace } from "@/lib/fair";
 import { DiceSound } from "@/lib/sound";
@@ -55,7 +55,7 @@ function HistoryList({ history }: { history: HistoryEntry[] }) {
   );
 }
 
-export function Roller({ about }: { about: ReactNode }) {
+export function Roller() {
   const { count, sound, history } = usePrefs();
   const [roll, setRoll] = useState<RollState | null>(null);
   const [ready, setReady] = useState(false);
@@ -64,7 +64,6 @@ export function Roller({ about }: { about: ReactNode }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const engineRef = useRef<DiceEngine | null>(null);
   const soundRef = useRef<DiceSound | null>(null);
-  const aboutRef = useRef<HTMLDialogElement>(null);
   const historyRef = useRef<HTMLDialogElement>(null);
   const countRef = useRef(count);
   const serialRef = useRef(0);
@@ -188,7 +187,7 @@ export function Roller({ about }: { about: ReactNode }) {
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
       if (event.metaKey || event.ctrlKey || event.altKey || event.repeat) return;
-      if (aboutRef.current?.open || historyRef.current?.open) return;
+      if (historyRef.current?.open) return;
       const target = event.target as HTMLElement;
       if (event.code === "Space" || event.key === "Enter") {
         // En un boton con foco, espacio/enter ya lo activan de forma nativa.
@@ -223,7 +222,7 @@ export function Roller({ about }: { about: ReactNode }) {
 
       <section className="panel" aria-label="Controles">
         <header className="topbar">
-          <h1 className="brand">Tirada</h1>
+          <p className="brand">Tirada</p>
           <div className="topbar-actions">
             <button
               type="button"
@@ -245,9 +244,9 @@ export function Roller({ about }: { about: ReactNode }) {
             <button type="button" className="text-button history-toggle" onClick={() => historyRef.current?.showModal()}>
               Historial
             </button>
-            <button type="button" className="text-button" onClick={() => aboutRef.current?.showModal()}>
+            <a className="text-button" href="#acerca">
               Acerca de
-            </button>
+            </a>
           </div>
         </header>
 
@@ -345,16 +344,6 @@ export function Roller({ about }: { about: ReactNode }) {
             Borrar historial
           </button>
         )}
-      </dialog>
-
-      <dialog ref={aboutRef} className="sheet" aria-label="Acerca de Tirada">
-        <div className="sheet-head">
-          <h2>Acerca de Tirada</h2>
-          <form method="dialog">
-            <button className="text-button">Cerrar</button>
-          </form>
-        </div>
-        {about}
       </dialog>
     </main>
   );

@@ -1,26 +1,29 @@
 import type { Metadata, Viewport } from "next";
 import { Geist } from "next/font/google";
+import { SITE_URL } from "@/lib/site";
 import "./globals.css";
 
 const geist = Geist({ variable: "--font-geist", subsets: ["latin"] });
 
-const productionHost = process.env.VERCEL_PROJECT_PRODUCTION_URL;
+const title = "Lanzar dados online: dado virtual 3D gratis y sin anuncios | Tirada";
+const description =
+  "Lanza de 1 a 6 dados online con física 3D real. Dado virtual gratis, justo y sin anuncios ni registro. Funciona en el móvil y sin conexión.";
 
 export const metadata: Metadata = {
-  metadataBase: new URL(productionHost ? `https://${productionHost}` : "http://localhost:3000"),
-  title: "Tirada: lanza dados online, sin anuncios",
-  description:
-    "Lanzador de dados 3D con física real. De 1 a 6 dados, resultados justos y sin anuncios ni registro. Funciona en el móvil y sin conexión.",
+  metadataBase: new URL(SITE_URL),
+  title,
+  description,
   applicationName: "Tirada",
   alternates: { canonical: "/" },
   openGraph: {
-    title: "Tirada: lanza dados online, sin anuncios",
-    description: "Dados 3D con física real. Justos, rápidos y sin anuncios.",
+    title,
+    description,
+    url: "/",
     type: "website",
     locale: "es",
     siteName: "Tirada",
   },
-  twitter: { card: "summary_large_image" },
+  twitter: { card: "summary_large_image", title, description },
   appleWebApp: { capable: true, title: "Tirada", statusBarStyle: "default" },
 };
 
