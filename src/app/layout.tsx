@@ -1,9 +1,10 @@
 import type { Metadata, Viewport } from "next";
-import { Geist } from "next/font/google";
+import { Lilita_One, Nunito } from "next/font/google";
 import { SITE_URL } from "@/lib/site";
 import "./globals.css";
 
-const geist = Geist({ variable: "--font-geist", subsets: ["latin"] });
+const lilita = Lilita_One({ variable: "--font-lilita", weight: "400", subsets: ["latin"] });
+const nunito = Nunito({ variable: "--font-nunito", subsets: ["latin"] });
 
 const title = "Lanzar dados online: dado virtual 3D gratis y sin anuncios | Tirada";
 const description =
@@ -29,16 +30,13 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#f3efe7" },
-    { media: "(prefers-color-scheme: dark)", color: "#13110f" },
-  ],
+  themeColor: "#2b211b",
   viewportFit: "cover",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="es" className={geist.variable}>
+    <html lang="es" className={`${lilita.variable} ${nunito.variable}`}>
       <body>{children}</body>
     </html>
   );

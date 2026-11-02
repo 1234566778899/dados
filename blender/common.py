@@ -16,6 +16,8 @@ TRAY_INNER = 3.6  # mitad del lado interior de la bandeja
 TRAY_CORNER = 0.7  # radio de esquina interior
 WALL_TOP = 0.8  # altura de la pared visible
 WALL_THICK = 0.42
+# Solo los cantos: la cara plana superior sigue siendo madera.
+GOLD_RINGS = {8, 9, 10}
 
 # Caras del dado occidental: opuestas suman 7 y 1-2-3 giran antihorario
 # alrededor del vertice (+,+,+).
@@ -54,12 +56,13 @@ def hex_color(value):
     return (*[srgb_to_linear(c) for c in rgb], 1.0)
 
 
-def make_material(name, color, roughness, coat=0.0, coat_roughness=0.1, specular=0.5):
+def make_material(name, color, roughness, coat=0.0, coat_roughness=0.1, specular=0.5, metallic=0.0):
     mat = bpy.data.materials.new(name)
     mat.use_nodes = True
     bsdf = mat.node_tree.nodes["Principled BSDF"]
     bsdf.inputs["Base Color"].default_value = hex_color(color)
     bsdf.inputs["Roughness"].default_value = roughness
+    bsdf.inputs["Metallic"].default_value = metallic
     bsdf.inputs["Specular IOR Level"].default_value = specular
     bsdf.inputs["Coat Weight"].default_value = coat
     bsdf.inputs["Coat Roughness"].default_value = coat_roughness
@@ -218,7 +221,8 @@ def build_tray(wood_mat, felt_mat):
         for i in range(count):
             j = (i + 1) % count
             face = bm.faces.new((a[i], a[j], b[j], b[i]))
-            face.material_index = 0
+            # El canto interior es un filo dorado fino.
+            face.material_index = 1 if r in GOLD_RINGS else 0
     # Fondo de la bandeja
     bottom = bm.faces.new(list(reversed(rings[0])))
     bottom.material_index = 0
@@ -230,6 +234,7 @@ def build_tray(wood_mat, felt_mat):
     bm.to_mesh(mesh)
     bm.free()
     mesh.materials.append(wood_mat)
+    mesh.materials.append(gold_material())
     mesh.shade_smooth()
     mesh.set_sharp_from_angle(angle=math.radians(50))
     tray = bpy.data.objects.new("Tray", mesh)
@@ -261,7 +266,11 @@ def pip_material():
 
 
 def wood_material():
-    return make_material("TrayWood", "#2B211B", 0.42, coat=0.35, coat_roughness=0.3)
+    return make_material("TrayWood", "#5A371F", 0.5, coat=0.3, coat_roughness=0.35)
+
+
+def gold_material():
+    return make_material("TrayGold", "#E0A82E", 0.32, metallic=1.0)
 
 
 def felt_material():

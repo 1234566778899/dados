@@ -1,6 +1,6 @@
 # Tirada
 
-Lanzador de dados 3D para la web: física real horneada en Blender, resultados justos y sin anuncios.
+Lanzador de dados 3D con estilo de videojuego: física real horneada en Blender, arte generado con IA, resultados justos y sin anuncios.
 
 ## Cómo funciona
 
@@ -32,5 +32,14 @@ sh blender/build_all.sh
 | `blender/bake_throws.py` | Simula y valida lanzamientos: `throws.bin` y `throws.json` |
 | `blender/render_stills.py` | Póster, icono e imagen social en Cycles |
 | `blender/inspect_throws.mjs` | Audita las tomas horneadas |
+
+## Arte generado con IA
+
+Las hojas originales de ChatGPT están en `art/source`. Las piezas de `public/art`, los iconos y la imagen social salen de ahí:
+
+```sh
+node art/slice.mjs art/source        # recorta y limpia las hojas
+node art/build_brand.mjs art/source  # fondos, iconos e imagen social
+```
 
 Si cambias la cámara en `src/lib/engine.ts`, cambia también la del póster en `render_stills.py`.

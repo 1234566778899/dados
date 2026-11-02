@@ -59,6 +59,26 @@ export class DiceSound {
     }
   }
 
+  /** Pequena fanfarria para combinaciones y logros. */
+  fanfare() {
+    const { context } = this;
+    if (!context) return;
+    const start = context.currentTime + 0.02;
+    [523.25, 659.25, 783.99, 1046.5].forEach((frequency, index) => {
+      const when = start + index * 0.085;
+      const tone = context.createOscillator();
+      tone.type = "triangle";
+      tone.frequency.value = frequency;
+      const gain = context.createGain();
+      gain.gain.setValueAtTime(0.0008, when);
+      gain.gain.exponentialRampToValueAtTime(0.16, when + 0.015);
+      gain.gain.exponentialRampToValueAtTime(0.0008, when + (index === 3 ? 0.45 : 0.16));
+      tone.connect(gain).connect(context.destination);
+      tone.start(when);
+      tone.stop(when + 0.5);
+    });
+  }
+
   stop() {
     for (const node of this.scheduled) {
       try {

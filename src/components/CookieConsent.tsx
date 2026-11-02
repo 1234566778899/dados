@@ -86,10 +86,10 @@ export function CookieConsent() {
             igual.
           </p>
           <div className="consent-actions">
-            <button type="button" onClick={() => setStatus("denied")}>
+            <button type="button" className="pill" onClick={() => setStatus("denied")}>
               Rechazar
             </button>
-            <button type="button" onClick={() => setStatus("granted")}>
+            <button type="button" className="pill" onClick={() => setStatus("granted")}>
               Aceptar
             </button>
           </div>

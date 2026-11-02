@@ -84,10 +84,10 @@ export class DiceEngine {
 
     const pmrem = new PMREMGenerator(this.renderer);
     this.scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
-    this.scene.environmentIntensity = 0.3;
+    this.scene.environmentIntensity = 0.42;
     pmrem.dispose();
 
-    const key = new DirectionalLight(0xfff4e6, 2.3);
+    const key = new DirectionalLight(0xffe7c4, 2.7);
     key.position.set(-6, 18, 5);
     key.castShadow = true;
     key.shadow.mapSize.set(2048, 2048);
@@ -103,7 +103,7 @@ export class DiceEngine {
     this.scene.add(new HemisphereLight(0xffffff, 0x3a332c, 0.35));
 
     // Sombra de la bandeja sobre la pagina: el canvas es transparente.
-    this.ground = new ShadowMaterial({ opacity: 0.22 });
+    this.ground = new ShadowMaterial({ opacity: 0.55 });
     const plane = new Mesh(new PlaneGeometry(80, 80), this.ground);
     plane.rotation.x = -Math.PI / 2;
     plane.position.y = -0.36;
@@ -149,11 +149,6 @@ export class DiceEngine {
     this.observer = new ResizeObserver(() => this.resize());
     this.observer.observe(this.canvas.parentElement ?? this.canvas);
     this.resize();
-  }
-
-  setDark(dark: boolean) {
-    if (this.ground) this.ground.opacity = dark ? 0.55 : 0.22;
-    this.requestFrame();
   }
 
   /** Coloca dados en reposo, sin animacion, sin resultado. */

@@ -1,6 +1,7 @@
 "use client";
 
 import { useSyncExternalStore } from "react";
+import { newlyUnlocked, type AchievementId } from "./achievements";
 
 export type HistoryEntry = { id: number; values: number[]; total: number };
 
@@ -8,11 +9,13 @@ export type Prefs = {
   count: number;
   sound: boolean;
   history: HistoryEntry[];
+  rolls: number;
+  unlocked: string[];
 };
 
 const KEY = "tirada:v1";
 const MAX_HISTORY = 50;
-const DEFAULTS: Prefs = { count: 1, sound: true, history: [] };
+const DEFAULTS: Prefs = { count: 1, sound: true, history: [], rolls: 0, unlocked: [] };
 
 let current: Prefs = DEFAULTS;
 let loaded = false;
@@ -24,10 +27,14 @@ function read(): Prefs {
     if (!raw) return DEFAULTS;
     const parsed = JSON.parse(raw) as Partial<Prefs>;
     const count = Number(parsed.count);
+    const history = Array.isArray(parsed.history) ? parsed.history.slice(0, MAX_HISTORY) : [];
+    const rolls = Number(parsed.rolls);
     return {
       count: Number.isInteger(count) && count >= 1 && count <= 6 ? count : DEFAULTS.count,
       sound: typeof parsed.sound === "boolean" ? parsed.sound : DEFAULTS.sound,
-      history: Array.isArray(parsed.history) ? parsed.history.slice(0, MAX_HISTORY) : [],
+      history,
+      rolls: Number.isInteger(rolls) && rolls >= 0 ? rolls : history.length,
+      unlocked: Array.isArray(parsed.unlocked) ? parsed.unlocked.filter((id) => typeof id === "string") : [],
     };
   } catch {
     return DEFAULTS;
@@ -64,13 +71,25 @@ export function usePrefs() {
 export const prefs = {
   setCount: (count: number) => update({ count }),
   setSound: (sound: boolean) => update({ sound }),
-  addRoll: (values: number[]) => {
+  /** Registra la tirada y devuelve los logros que acaba de desbloquear. */
+  addRoll: (values: number[]): AchievementId[] => {
+    const state = getSnapshot();
+    const earned = newlyUnlocked(values, {
+      rolls: state.rolls,
+      recentTotals: state.history.map((entry) => entry.total),
+      unlocked: state.unlocked,
+    });
     const entry: HistoryEntry = {
       id: Date.now(),
       values,
       total: values.reduce((sum, value) => sum + value, 0),
     };
-    update({ history: [entry, ...getSnapshot().history].slice(0, MAX_HISTORY) });
+    update({
+      history: [entry, ...state.history].slice(0, MAX_HISTORY),
+      rolls: state.rolls + 1,
+      unlocked: [...state.unlocked, ...earned],
+    });
+    return earned;
   },
   clearHistory: () => update({ history: [] }),
 };
