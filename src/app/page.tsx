@@ -31,6 +31,15 @@ const faq = [
 ];
 
 const jsonLd = [
+  // Google toma de aqui el nombre del sitio; sin esto muestra "Vercel".
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "Tirada",
+    alternateName: "Tirada Dados",
+    url: `${SITE_URL}/`,
+    inLanguage: "es",
+  },
   {
     "@context": "https://schema.org",
     "@type": "WebApplication",

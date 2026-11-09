@@ -6,7 +6,7 @@ import "./globals.css";
 const lilita = Lilita_One({ variable: "--font-lilita", weight: "400", subsets: ["latin"] });
 const nunito = Nunito({ variable: "--font-nunito", subsets: ["latin"] });
 
-const title = "Lanzar dados online: dado virtual 3D gratis y sin anuncios | Tirada";
+const title = "Lanzar dados online gratis: dado virtual 3D | Tirada";
 const description =
   "Lanza de 1 a 6 dados online con física 3D real. Dado virtual gratis, justo y sin anuncios ni registro. Funciona en el móvil y sin conexión.";
 
